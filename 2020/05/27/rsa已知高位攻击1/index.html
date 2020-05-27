@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>rsa已知高位攻击 | 人生若只如初见</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="rsa已知高位攻击 | 人生若只如初见">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="一般，椭圆曲线可以用以下二元三阶方程的形式来表示：  1y² &#x3D; x³ + ax + b，其中a、b为系数。   它大概的几何形状如下图：    而本文要介绍的加法和乘法，就是基于这样一个奇怪的几何图形来做到的。 椭圆曲线加法（非有限域）：在椭圆曲线上取一点P(Xp,Yp)，再取一点Q(Xq,Yq)，连接P、Q两点作一条直线，这条直线将在椭圆曲线上交于第三点G，过G点作垂直于X轴的直线">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ecc椭圆曲线基础">
+<meta property="og:url" content="http://yoursite.com/2020/05/27/Ecc%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="人生若只如初见">
+<meta property="og:description" content="一般，椭圆曲线可以用以下二元三阶方程的形式来表示：  1y² &#x3D; x³ + ax + b，其中a、b为系数。   它大概的几何形状如下图：    而本文要介绍的加法和乘法，就是基于这样一个奇怪的几何图形来做到的。 椭圆曲线加法（非有限域）：在椭圆曲线上取一点P(Xp,Yp)，再取一点Q(Xq,Yq)，连接P、Q两点作一条直线，这条直线将在椭圆曲线上交于第三点G，过G点作垂直于X轴的直线">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/images/pasted-14.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-15.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-16.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-18.png">
+<meta property="article:published_time" content="2020-05-27T10:16:00.000Z">
+<meta property="article:modified_time" content="2020-05-27T10:26:38.960Z">
+<meta property="article:author" content="人生若只如初见">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/pasted-14.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+</div>
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>人生若只如初见</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+        <a title="github" href="https://github.com/weichujian" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="csdn" href="https://blog.csdn.net/weixin_44159598" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-csdn"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active" data-rel="All">All<small>(7)</small></div></li>
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="密码学"><i class="fold iconfont icon-right"></i>密码学<small>(6)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="ECC">ECC<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="rsa">rsa<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="编码">编码<small>(4)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    </div>
+    <div><a class="about  hasFriend  site_url"  href="/about">About</a><a style="width: 50%"  class="friends">Friends</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="7">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+            <li><a target="_blank" href="https://r0co.top/">r0co</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" />
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="All 密码学 ECC "
+           href="/2020/05/27/Ecc%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%9F%BA%E7%A1%80/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Ecc椭圆曲线基础">Ecc椭圆曲线基础</span>
+            <span class="post-date" title="2020-05-27 18:16:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 编码 "
+           href="/2020/05/27/Unicode%E7%BC%96%E7%A0%81%E8%A1%8D%E7%94%9F%E5%87%BA%E7%9A%84%E7%BC%96%E7%A0%81%E6%96%B9%E6%A1%88/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Unicode编码衍生出的编码方案">Unicode编码衍生出的编码方案</span>
+            <span class="post-date" title="2020-05-27 18:11:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 编码 "
+           href="/2020/05/27/%E5%AF%86%E7%A0%81%E5%AD%A6%E7%BC%96%E7%A0%81-%E4%B8%89-Unicode%E7%BC%96%E7%A0%81/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="密码学编码(三)Unicode编码">密码学编码(三)Unicode编码</span>
+            <span class="post-date" title="2020-05-27 18:01:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 编码 "
+           href="/2020/05/27/%E5%AF%86%E7%A0%81%E5%AD%A6%E7%BC%96%E7%A0%81-%E4%B8%80-ASCII%E7%BC%96%E7%A0%81/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="密码学编码(一)ASCII编码">密码学编码(一)ASCII编码</span>
+            <span class="post-date" title="2020-05-27 17:56:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 编码 "
+           href="/2020/05/27/%E5%AF%86%E7%A0%81%E5%AD%A6%E7%BC%96%E7%A0%81-%E4%BA%8C-base%E7%BC%96%E7%A0%81/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="密码学编码(二)base编码">密码学编码(二)base编码</span>
+            <span class="post-date" title="2020-05-27 15:23:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/05/27/rsa%E5%B7%B2%E7%9F%A5%E9%AB%98%E4%BD%8D%E6%94%BB%E5%87%BB1/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="rsa已知高位攻击">rsa已知高位攻击</span>
+            <span class="post-date" title="2020-05-27 11:54:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All "
+           href="/2020/05/27/rsa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-1/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="rsa基础学习">rsa基础学习</span>
+            <span class="post-date" title="2020-05-27 11:46:00">2020/05/27</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-rsa已知高位攻击1" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">rsa已知高位攻击</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            <a  data-rel="密码学">密码学</a> > 
+            
+            <a  data-rel="rsa">rsa</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2020-05-27 14:38:58'>2020-05-27 11:54</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#已知高位攻击利用"><span class="toc-text">已知高位攻击利用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-格的基础"><span class="toc-text">1. 格的基础</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-格基规约"><span class="toc-text">2. 格基规约</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#重点（伪随机序列的还原重构）"><span class="toc-text">重点（伪随机序列的还原重构）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LLL-算法在密码分析中的应用-攻克线性同余结尾序列"><span class="toc-text">LLL-算法在密码分析中的应用(攻克线性同余结尾序列)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#J-S算法"><span class="toc-text">J.S算法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#coppersmith的一些定理"><span class="toc-text">coppersmith的一些定理:</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#已知高位攻击分为三种情况"><span class="toc-text">已知高位攻击分为三种情况</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#已知P的高位"><span class="toc-text">已知P的高位</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#已知d的高位"><span class="toc-text">已知d的高位</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#已知明文m的高位"><span class="toc-text">已知明文m的高位</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="已知高位攻击利用"><a href="#已知高位攻击利用" class="headerlink" title="已知高位攻击利用"></a>已知高位攻击利用</h1><ul>
+<li><p>基础讲解：</p>
+<h1 id="1-格的基础"><a href="#1-格的基础" class="headerlink" title="1. 格的基础"></a>1. 格的基础</h1></li>
+<li><p>格的基础概念：设v1,v2,….,vm线性无关，m维格L（v1,v2,….,vm）是指由向量v1,v2,….,vm生成的一个向量集，它的形式为——L（v1,v2,….,vm）=Σ ai * vi, (i=1,2,….,m ai∈Z)<br>称{v1,v2,….,vm}为格L的一组基，且记Dim(L)=m; m、n分别为格L的维数和秩，当m=n时，称格L是满维的。</p>
+<h1 id="2-格基规约"><a href="#2-格基规约" class="headerlink" title="2. 格基规约"></a>2. 格基规约</h1></li>
+<li><p>同一个格可以使用不同的基来表示，解决格上的问题时，即使使用同一种算法，如果选用不同的基，最后的运行时间和运行结果差别也是十分明显的。选择最优的一组基的过程就是格基规约，并称这样的一组基为格的一组规约基。常见的两种规约方法是Gauss规约和LLL规约。<br><img src="https://note.youdao.com/yws/api/personal/file/3E79235F98824E54871C18C516CCC71D?method=download&shareKey=719882fdcdade620567084447f055b72" alt=""></p>
+</li>
+<li><p>其实综上所述，已知高位攻击就是将问题转换到格的数学问题中，转向求格的最短非零向量</p>
+</li>
+<li><p>格基规约算法应用于密码分析的另一个重要方面就是线性同余结尾序列的重构。</p>
+</li>
+</ul>
+<h1 id="重点（伪随机序列的还原重构）"><a href="#重点（伪随机序列的还原重构）" class="headerlink" title="重点（伪随机序列的还原重构）"></a>重点（伪随机序列的还原重构）</h1><h2 id="LLL-算法在密码分析中的应用-攻克线性同余结尾序列"><a href="#LLL-算法在密码分析中的应用-攻克线性同余结尾序列" class="headerlink" title="LLL-算法在密码分析中的应用(攻克线性同余结尾序列)"></a>LLL-算法在密码分析中的应用(攻克线性同余结尾序列)</h2><ul>
+<li>众所周知, 线性同余是产生伪随机序列的一个极其简便流行的手段.但是, 若将原序列原样输出,而不做</li>
+<li>处理的话 ,即使是在不知道模数与乘子的情况下, 序列也能被轻易地重构(即还原出模数与乘子).于是, 为了增强抗攻击力,Knuth 提出了截尾序列生成器</li>
+<li>该生成器模型如下 :<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">输入初值 x 0 ,递归生成序列&#123;x i &#125;:x i+1 &#x3D;ax i +b mod m , a , b , m ∈ Z ,输出序列&#123;y i &#125;:y i &#x3D;[ x i &#x2F;2 βv ]</span><br></pre></td></tr></table></figure></li>
+<li>其中v 为m 的比特数 , β =1 -α而α为输出y i 的比特数占原x i 的比特数之比例.</li>
+<li>由于对{x i }做了截尾处理, 使重构困难了.早期的计算机上曾广泛使用了类似的方法产生伪随机整数序列 .其方法是将 n 比特数平方后, 丢弃头尾各n/2 比特</li>
+</ul>
+<h1 id="J-S算法"><a href="#J-S算法" class="headerlink" title="J.S算法"></a>J.S算法</h1><ul>
+<li><p>功能 　设得到 n +t 长的序列 ,记为 y 1 , y 2 , …, y t , y t+1 , …, y t+n ,其中 n ≈(2 αt log m)1/2,且原序列{xi}中(x 1 -x 0 , m)=1.J.S.算法能求出模数 m 和乘子a , 从而重构了原模型</p>
+</li>
+<li><p>描述：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;1&gt; 做Vi&#x3D;[y(i+1) - yi ,  y(i+2)-y(i+1)....,y(i+t)-y(i+t)-1],  i&#x3D;1,2,...,n.</span><br><span class="line">&lt;2&gt; 适当选取 k , 考虑 kV 1 , kV 2 , …, kV n 作输入 , 执行 KILL- 算法 , 得到 λ&#x3D;(λ 1 , λ 2 , …, λ n ), 且∑λ i V i &#x3D;0   (i&#x3D;1，2,...,n), λ 较小.</span><br><span class="line">&lt;3&gt; 做多项式 P(x)&#x3D;Σλi * X^i  (i&#x3D;1,2,...,n)</span><br><span class="line">&lt;4&gt; 重复(1)～ (3)多次 ,得到多项式序列 p 1 , p 2 , …, p r .将p i 自然映射到Z^(n+1) 上.应用LLL-算法于p 1 , p 2 ,…, p r 上, 得到生成的格 L 的一组 LLL-约基 ,计算 d(L),令m &#x3D;d(L),输出 m </span><br><span class="line">&lt;5&gt; 将 L 的基中次数 ≥2的向量乘以大整数 K (K ≥m 2^(n&#x2F;2) ),再构成子格 L′, 执行 LLL-算法 ,找到 L′的一组 LLL-约基 .运用线性代数的知识,利用 LLL-约基, 找到首一多项式 A(x).令a &#x3D;A(0), 输出 a .算法结束 .</span><br></pre></td></tr></table></figure></li>
+<li><p>注意：在（4）中多项式个数r≤（6α-1）㏒ m ㏒ ㏒ m,就可以满足要求了，算法中执行的LLL-算法其实是LLL-算法在输入任意r个向量(有可能线性相关)情况时的改进算法</p>
+</li>
+</ul>
+<h1 id="coppersmith的一些定理"><a href="#coppersmith的一些定理" class="headerlink" title="coppersmith的一些定理:"></a>coppersmith的一些定理:</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;1&gt;定理3.3 对任意的a &gt; 0 ， 给定N &#x3D; PQR及PQ的高位(1&#x2F;5)(logN,2)比特，我们可以在多项式时间logN内得到N的分解式。这是三个因式的分解。也就是说我们现在是由理论依据的，已知高位是可以在一定时间内分解N。</span><br><span class="line">&lt;2&gt;已知p高位u多少位菜可以进行攻击呢？定理是在《Mathematics_of_Public_Key_Cryptography》这本数里面提到的，我们将我们上面得到的N的值带入上图的式子中。计算(1&#x2F;根号2)*N</span><br></pre></td></tr></table></figure>
+<ul>
+<li>由上式得出：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if p.bit_length &#x3D;&#x3D; 1024 ,p的高位需已知约576位</span><br><span class="line"></span><br><span class="line">if p.bit_length &#x3D;&#x3D; 1024 ,p的高位需已知约288位</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>1.sage里面的small_roots能实现上述的给出已知的p高位进行分解N的函数方法，利用了LLL算法求解非线性低维度多项式方程小根的方法。</p>
+</li>
+<li><p>2.Coppersmith证明了在已知p和q部分比特的情况下，若q和p的未知部分的上界X和Y满足XY &lt;= N ^ (0.5)则Ｎ的多项式可以被分解。<br>这里的0.5可以替换成其他的数，具体原因不详。</p>
+</li>
+<li><p>链接：<br><a href="https://doc.sagemath.org/html/en/reference/polynomial_rings/sage/rings/polynomial/polynomial_modn_dense_ntl.html#sage.rings.polynomial.polynomial_modn_dense_ntl.small_roots" target="_blank" rel="noopener">sage里small_roots的具体用法</a></p>
+</li>
+</ul>
+<h1 id="已知高位攻击分为三种情况"><a href="#已知高位攻击分为三种情况" class="headerlink" title="已知高位攻击分为三种情况"></a>已知高位攻击分为三种情况</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;1&gt;已知P的高位</span><br><span class="line">&lt;2&gt;已知d的高位</span><br><span class="line">&lt;3&gt;已知m的高位</span><br></pre></td></tr></table></figure>
+<h2 id="已知P的高位"><a href="#已知P的高位" class="headerlink" title="已知P的高位"></a>已知P的高位</h2><ul>
+<li><p>知道p的高位为p的位数的约1/2时即可</p>
+</li>
+<li><p>已知e,n爆破 1024的P，至少需要知道前576位二进制，即前144位16进制(特殊情况下，可能所得到的已知位数稍小于144位，需要爆破两三位，然后使用sage脚本)</p>
+</li>
+<li><p>正好已知144位16进制的情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">n&#x3D;</span><br><span class="line">p4&#x3D;            #已知P的高位</span><br><span class="line">e&#x3D;</span><br><span class="line">pbits&#x3D;          #P原本的位数</span><br><span class="line"></span><br><span class="line">kbits&#x3D;pbits - p4.nbits()</span><br><span class="line">print p4.nbits()</span><br><span class="line">p4 &#x3D; p4 &lt;&lt; kbits</span><br><span class="line">PR.&lt;x&gt; &#x3D; PolynomialRing(Zmod(n))</span><br><span class="line">f &#x3D; x + p4</span><br><span class="line">roots &#x3D; f.small_roots(X&#x3D;2^kbits,beta&#x3D;0.4)</span><br><span class="line"># 经过以上一些函数处理后，n和p已经被转化为10进制</span><br><span class="line">if roots:</span><br><span class="line">    p&#x3D; p4 + int(roots([0]))</span><br><span class="line">    print &quot;n&quot;,n</span><br><span class="line">    print &quot;p&quot;,p</span><br><span class="line">    print &quot;q&quot;,n&#x2F;p</span><br></pre></td></tr></table></figure></li>
+<li><p>已知142位16进制的情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">n&#x3D;</span><br><span class="line">p4&#x3D;            #已知P的高位,最后面8位二进制，也就是两位十六进制要参与爆破，所以要用00补充</span><br><span class="line">e&#x3D;</span><br><span class="line">pbits&#x3D;          #P原本的位数</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for i in range(0,256):        # 要爆破的8位二进制数，为2**8&#x3D;&#x3D;256，表示0~255</span><br><span class="line">    p4 &#x3D;</span><br><span class="line">    p4 &#x3D; p4 + int(hex(i),16)</span><br><span class="line">#print hex(p4)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">kbits&#x3D;pbits - p4.nbits()</span><br><span class="line">print p4.nbits()</span><br><span class="line">p4 &#x3D; p4 &lt;&lt; kbits</span><br><span class="line">PR.&lt;x&gt; &#x3D; PolynomialRing(Zmod(n))</span><br><span class="line">f &#x3D; x + p4</span><br><span class="line">roots &#x3D; f.small_roots(X&#x3D;2^kbits,beta&#x3D;0.4)</span><br><span class="line"># 经过以上一些函数处理后，n和p已经被转化为10进制</span><br><span class="line">if roots:</span><br><span class="line">    p&#x3D; p4 + int(roots([0]))</span><br><span class="line">    print &quot;n&quot;,n</span><br><span class="line">    print &quot;p&quot;,p</span><br><span class="line">    print &quot;q&quot;,n&#x2F;p</span><br></pre></td></tr></table></figure>
+<h2 id="已知d的高位"><a href="#已知d的高位" class="headerlink" title="已知d的高位"></a>已知d的高位</h2></li>
+<li><p>如果知道d的低位，低位约为n的位数的1/4就可以恢复d。已知私钥的512位的低位 Partial Key Exposure Attack(部分私钥暴露攻击)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">def partial_p(p0, kbits, n):</span><br><span class="line"> </span><br><span class="line">    PR.&lt;x&gt; &#x3D; PolynomialRing(Zmod(n))</span><br><span class="line"> </span><br><span class="line">    nbits &#x3D; n.nbits()</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">    f &#x3D; 2^kbits*x + p0</span><br><span class="line"> </span><br><span class="line">    f &#x3D; f.monic()</span><br><span class="line"> </span><br><span class="line">    roots &#x3D; f.small_roots(X&#x3D;2^(nbits&#x2F;&#x2F;2-kbits), beta&#x3D;0.3)  # find root &lt; 2^(nbits&#x2F;&#x2F;2-kbits) with factor &gt;&#x3D; n^0.3</span><br><span class="line"> </span><br><span class="line">    if roots:</span><br><span class="line"> </span><br><span class="line">        x0 &#x3D; roots[0]</span><br><span class="line"> </span><br><span class="line">        p &#x3D; gcd(2^kbits*x0 + p0, n)</span><br><span class="line"> </span><br><span class="line">        return ZZ(p)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">def find_p(d0, kbits, e, n):</span><br><span class="line"> </span><br><span class="line">    X &#x3D; var(&#39;X&#39;)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">    for k in xrange(1, e+1):</span><br><span class="line"> </span><br><span class="line">        results &#x3D; solve_mod([e*d0*X - k*X*(n-X+1) + k*n &#x3D;&#x3D; X], 2^kbits)</span><br><span class="line"> </span><br><span class="line">        for x in results:</span><br><span class="line"> </span><br><span class="line">            p0 &#x3D; ZZ(x[0])</span><br><span class="line"> </span><br><span class="line">            p &#x3D; partial_p(p0, kbits, n)</span><br><span class="line"> </span><br><span class="line">            if p:</span><br><span class="line"> </span><br><span class="line">                return p</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line"> </span><br><span class="line">    n &#x3D; 0xd463feb999c9292e25acd7f98d49a13413df2c4e74820136e739281bb394a73f2d1e6b53066932f50a73310360e5a5c622507d8662dadaef860b3266222129fd645eb74a0207af9bd79a9794f4bd21f32841ce9e1700b0b049cfadb760993fcfc7c65eca63904aa197df306cad8720b1b228484629cf967d808c13f6caef94a9</span><br><span class="line"> </span><br><span class="line">    e &#x3D; 3</span><br><span class="line"> </span><br><span class="line">    d &#x3D; 0x603d033f2ef6c759aec839f132a45215fc8a635b757f3951a731fe60bc6729b3bcf819b57abfcaba3a93e9edef766c0d499cad3f7adb306bcf1645cfb63400e3</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">    beta &#x3D; 0.5</span><br><span class="line"> </span><br><span class="line">    epsilon &#x3D; beta^2&#x2F;7</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">    nbits &#x3D; n.nbits()</span><br><span class="line"> </span><br><span class="line">    print &quot;nbits:%d:&quot;%(nbits)</span><br><span class="line"> </span><br><span class="line">    #kbits &#x3D; floor(nbits*(beta^2+epsilon))</span><br><span class="line"> </span><br><span class="line">    kbits &#x3D; nbits - d.nbits()-1</span><br><span class="line"> </span><br><span class="line">    print &quot;kbits:%d&quot;%(kbits)</span><br><span class="line"> </span><br><span class="line">    d0 &#x3D; d &amp; (2^kbits-1)</span><br><span class="line"> </span><br><span class="line">    print &quot;lower %d bits (of %d bits) is given&quot; % (kbits, nbits)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">    p &#x3D; find_p(d0, kbits, e, n)</span><br><span class="line"> </span><br><span class="line">    print &quot;found p: %d&quot; % p</span><br><span class="line"> </span><br><span class="line">    q &#x3D; n&#x2F;&#x2F;p</span><br><span class="line"> </span><br><span class="line">    print d</span><br><span class="line"> </span><br><span class="line">print inverse_mod(e, (p-1)*(q-1))</span><br></pre></td></tr></table></figure>
+<h2 id="已知明文m的高位"><a href="#已知明文m的高位" class="headerlink" title="已知明文m的高位"></a>已知明文m的高位</h2></li>
+<li><p>已知明文的高位，是Stereotyped messages攻击 或 Lattice based attacks </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">n &#x3D; 0x2519834a6cc3bf25d078caefc5358e41c726a7a56270e425e21515d1b195b248b82f4189a0b621694586bb254e27010ee4376a849bb373e5e3f2eb622e3e7804d18ddb897463f3516b431e7fc65ec41c42edf736d5940c3139d1e374aed1fc3b70737125e1f540b541a9c671f4bf0ded798d727211116eb8b86cdd6a29aefcc7</span><br><span class="line"></span><br><span class="line">e &#x3D; 3</span><br><span class="line">m &#x3D; randrange(n)</span><br><span class="line">c &#x3D; pow(m, e, n)</span><br><span class="line"></span><br><span class="line">beta &#x3D; 1</span><br><span class="line"> </span><br><span class="line">epsilon &#x3D; beta^2&#x2F;7</span><br><span class="line"> </span><br><span class="line">nbits &#x3D; n.nbits()</span><br><span class="line"> </span><br><span class="line">kbits &#x3D; floor(nbits*(beta^2&#x2F;e-epsilon))</span><br><span class="line"> </span><br><span class="line">#mbar &#x3D; m &amp; (2^nbits-2^kbits)</span><br><span class="line"> </span><br><span class="line">mbar &#x3D; 0xb11ffc4ce423c77035280f1c575696327901daac8a83c057c453973ee5f4e508455648886441c0f3393fe4c922ef1c3a6249c12d21a000000000000000000</span><br><span class="line"> </span><br><span class="line">c &#x3D; 0x1f6f6a8e61f7b5ad8bef738f4376a96724192d8da1e3689dec7ce5d1df615e0910803317f9bafb6671ffe722e0292ce76cca399f2af1952dd31a61b37019da9cf27f82c3ecd4befc03c557efe1a5a29f9bb73c0239f62ed951955718ac0eaa3f60a4c415ef064ea33bbd61abe127c6fc808c0edb034c52c45bd20a219317fb75</span><br><span class="line"> </span><br><span class="line">print &quot;upper %d bits (of %d bits) is given&quot; % (nbits-kbits, nbits)</span><br><span class="line"> </span><br><span class="line">PR.&lt;x&gt; &#x3D; PolynomialRing(Zmod(n))</span><br><span class="line"> </span><br><span class="line">f &#x3D; (mbar + x)^e - c</span><br><span class="line"></span><br><span class="line">print m</span><br><span class="line">x0 &#x3D; f.small_roots(X&#x3D;2^kbits, beta&#x3D;1)[0]  # find root &lt; 2^kbits with factor &#x3D; n1</span><br><span class="line">print mbar + x0</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1259742453@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">💰</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 weichujian
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>Help us with donation</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
