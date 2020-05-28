@@ -1,7 +1,9 @@
 title: rsa基础学习
 author: 人生若只如初见
 tags: []
-categories: []
+categories:
+  - 密码学
+  - rsa
 date: 2020-05-27 11:46:00
 ---
 # rsa基础
