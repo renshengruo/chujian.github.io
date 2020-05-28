@@ -1,0 +1,11 @@
+<div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        <% site.tags.forEach(function(tag, i){ %>
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a><%-tag.name%></a>
+            </li>
+        <% }) %>
+    </div>
+
+</div>
