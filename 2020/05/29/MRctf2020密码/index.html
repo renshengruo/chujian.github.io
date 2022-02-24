@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="love.js"></script>
+</head>
+<head>
+  <meta charset="utf-8">
+  <title>MRctf2020密码 | 人生若只如初见</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="MRctf2020密码 | 人生若只如初见">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="1、CVE-2018-11810超额定向分配相关合约源码 漏洞点 1234567891011121314151617181920212223function allocate(address _address, uint256 _amount, uint8 _type) public onlyOwner returns (bool success) &amp;#123;    &#x2F;&#x2F; o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="几个智能合约漏洞分析">
+<meta property="og:url" content="http://yoursite.com/2022/02/08/%E5%87%A0%E4%B8%AA%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="人生若只如初见">
+<meta property="og:description" content="1、CVE-2018-11810超额定向分配相关合约源码 漏洞点 1234567891011121314151617181920212223function allocate(address _address, uint256 _amount, uint8 _type) public onlyOwner returns (bool success) &amp;#123;    &#x2F;&#x2F; o">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/images/pasted-35.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-36.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-37.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-38.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-40.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-39.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-41.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-42.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-43.png">
+<meta property="article:published_time" content="2022-02-08T08:36:00.000Z">
+<meta property="article:modified_time" content="2022-02-08T11:21:13.529Z">
+<meta property="article:author" content="人生若只如初见">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/pasted-35.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+</div>
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>人生若只如初见</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+        <a title="github" href="https://github.com/weichujian" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="csdn" href="https://blog.csdn.net/weixin_44159598" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-csdn"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active" data-rel="All">All<small>(21)</small></div></li>
+    
+        
+            
+            <li><div data-rel="ctf">ctf<small>(2)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="密码学"><i class="fold iconfont icon-right"></i>密码学<small>(19)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="ECC">ECC<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="rsa">rsa<small>(8)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="区块链">区块链<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="填充方式">填充方式<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="算法">算法<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="编码">编码<small>(4)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="随机数">随机数<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    </div>
+    <div><a class="about  hasFriend  site_url"  href="/about">About</a><a style="width: 50%"  class="friends">Friends</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="21">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+            <li><a target="_blank" href="https://r0co.top/">r0co</a></li>
+            
+            <li><a target="_blank" href="http://www.stao.site">stao</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" />
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="All 密码学 区块链 "
+           href="/2022/02/08/%E5%87%A0%E4%B8%AA%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="几个智能合约漏洞分析">几个智能合约漏洞分析</span>
+            <span class="post-date" title="2022-02-08 16:36:00">2022/02/08</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2021/05/24/RSA-crt%E7%AD%BE%E5%90%8D%E9%97%AE%E9%A2%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="RSA-crt签名问题">RSA-crt签名问题</span>
+            <span class="post-date" title="2021-05-24 12:02:00">2021/05/24</span>
+        </a>
+        
+        <a  class="All 密码学 "
+           href="/2021/05/24/python%E5%AE%9E%E7%8E%B0des%E4%B8%8ERSA/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="python实现des与RSA">python实现des与RSA</span>
+            <span class="post-date" title="2021-05-24 11:50:00">2021/05/24</span>
+        </a>
+        
+        <a  class="All 密码学 "
+           href="/2021/03/17/rc4%E7%AC%94%E8%AE%B0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="rc4笔记">rc4笔记</span>
+            <span class="post-date" title="2021-03-17 16:00:00">2021/03/17</span>
+        </a>
+        
+        <a  class="All 密码学 填充方式 "
+           href="/2020/09/24/%E5%88%86%E7%BB%84%E5%8A%A0%E5%AF%86%E7%9A%84padding/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="分组加密的padding">分组加密的padding</span>
+            <span class="post-date" title="2020-09-24 19:55:00">2020/09/24</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/09/06/RsaLSBOrcalePadding/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="RsaLsbOrcalePadding">RsaLsbOrcalePadding</span>
+            <span class="post-date" title="2020-09-06 09:23:00">2020/09/06</span>
+        </a>
+        
+        <a  class="All ctf "
+           href="/2020/06/24/%E7%BD%91%E9%BC%8E%E6%9D%AF2020%E9%9D%92%E9%BE%99%E7%BB%84crypto/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="网鼎杯2020青龙组crypto">网鼎杯2020青龙组crypto</span>
+            <span class="post-date" title="2020-06-24 09:06:00">2020/06/24</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/06/23/rsa%E5%BD%93e-2%E4%B8%94%E4%B8%8D%E4%BA%92%E7%B4%A0%E6%97%B6%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="rsa当e=2且不互素时处理方式">rsa当e=2且不互素时处理方式</span>
+            <span class="post-date" title="2020-06-23 18:10:00">2020/06/23</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/06/01/%E5%B0%86CRT-%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86-%E4%B8%8ERSA%E7%BB%93%E5%90%88/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="将CRT(中国剩余定理)与RSA结合">将CRT(中国剩余定理)与RSA结合</span>
+            <span class="post-date" title="2020-06-01 09:00:00">2020/06/01</span>
+        </a>
+        
+        <a  class="All ctf "
+           href="/2020/05/29/MRctf2020%E5%AF%86%E7%A0%81/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="MRctf2020密码">MRctf2020密码</span>
+            <span class="post-date" title="2020-05-29 11:35:00">2020/05/29</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/05/28/rsa-Factor-Attack-%E5%8F%8A%E5%B8%B8%E7%94%A8%E8%84%9A%E6%9C%AC/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="RSA  Factor Attack 及常用脚本">RSA  Factor Attack 及常用脚本</span>
+            <span class="post-date" title="2020-05-28 22:31:00">2020/05/28</span>
+        </a>
+        
+        <a  class="All 密码学 算法 "
+           href="/2020/05/28/%E7%BA%A2%E9%BB%91%E6%A0%91%E7%9A%84%E5%88%A0%E9%99%A4%E5%92%8C%E5%8F%98%E8%89%B2/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="红黑树的删除和变色">红黑树的删除和变色</span>
+            <span class="post-date" title="2020-05-28 19:02:00">2020/05/28</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/05/28/rsa%E5%B7%B2%E7%9F%A5e-d%E5%88%86%E8%A7%A3N/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="rsa已知e*d分解N">rsa已知e*d分解N</span>
+            <span class="post-date" title="2020-05-28 18:30:00">2020/05/28</span>
+        </a>
+        
+        <a  class="All 密码学 随机数 "
+           href="/2020/05/28/lcg%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90%E5%99%A8/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="lcg线性同余随机数生成器">lcg线性同余随机数生成器</span>
+            <span class="post-date" title="2020-05-28 09:49:00">2020/05/28</span>
+        </a>
+        
+        <a  class="All 密码学 ECC "
+           href="/2020/05/27/Ecc%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%9F%BA%E7%A1%80/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Ecc椭圆曲线基础">Ecc椭圆曲线基础</span>
+            <span class="post-date" title="2020-05-27 18:16:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 编码 "
+           href="/2020/05/27/Unicode%E7%BC%96%E7%A0%81%E8%A1%8D%E7%94%9F%E5%87%BA%E7%9A%84%E7%BC%96%E7%A0%81%E6%96%B9%E6%A1%88/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Unicode编码衍生出的编码方案">Unicode编码衍生出的编码方案</span>
+            <span class="post-date" title="2020-05-27 18:11:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 编码 "
+           href="/2020/05/27/%E5%AF%86%E7%A0%81%E5%AD%A6%E7%BC%96%E7%A0%81-%E4%B8%89-Unicode%E7%BC%96%E7%A0%81/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="密码学编码(三)Unicode编码">密码学编码(三)Unicode编码</span>
+            <span class="post-date" title="2020-05-27 18:01:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 编码 "
+           href="/2020/05/27/%E5%AF%86%E7%A0%81%E5%AD%A6%E7%BC%96%E7%A0%81-%E4%B8%80-ASCII%E7%BC%96%E7%A0%81/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="密码学编码(一)ASCII编码">密码学编码(一)ASCII编码</span>
+            <span class="post-date" title="2020-05-27 17:56:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 编码 "
+           href="/2020/05/27/%E5%AF%86%E7%A0%81%E5%AD%A6%E7%BC%96%E7%A0%81-%E4%BA%8C-base%E7%BC%96%E7%A0%81/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="密码学编码(二)base编码">密码学编码(二)base编码</span>
+            <span class="post-date" title="2020-05-27 15:23:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/05/27/rsa%E5%B7%B2%E7%9F%A5%E9%AB%98%E4%BD%8D%E6%94%BB%E5%87%BB1/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="rsa已知高位攻击">rsa已知高位攻击</span>
+            <span class="post-date" title="2020-05-27 11:54:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/05/27/rsa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-1/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="rsa基础学习">rsa基础学习</span>
+            <span class="post-date" title="2020-05-27 11:46:00">2020/05/27</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-MRctf2020密码" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">MRctf2020密码</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            <a  data-rel="ctf">ctf</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2020-05-29 11:36:12'>2020-05-29 11:35</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#babyrsa"><span class="toc-text">babyrsa</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Easy-RSA"><span class="toc-text">Easy_RSA</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="babyrsa"><a href="#babyrsa" class="headerlink" title="babyrsa"></a>babyrsa</h1><ul>
+<li><p>根据主函数可知，首要目的是找到_P和_Q，首先来看_P</p>
+</li>
+<li><p>可以发现<br><img src="https://img-blog.csdnimg.cn/20200329224856124.png" alt=""></p>
+</li>
+<li><p>题目已给出P[9],所以直接目的可以手动测试周围素数，直到找到全部（这里是一部分）<br><img src="https://img-blog.csdnimg.cn/20200329225022887.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDE1OTU5OA==,size_16,color_FFFFFF,t_70" alt=""></p>
+</li>
+<li><p>这里我们可以得到N</p>
+</li>
+<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">factor &#x3D; pow(p, base, n)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>这一句说明我们应该将这个简单RSA解出来，此时按照一般RSA的步骤求得d<br><img src="https://img-blog.csdnimg.cn/20200329225008750.png" alt=""></p>
+</li>
+<li><p>这里已经得到N的所有因数，所以此时N的欧拉函数为所有因数减1相乘，即(p1-1)<em>(p2-1)</em>(…)*(p17-1)， 到此得到P的值</p>
+</li>
+<li><p>接下来是Q<br><img src="https://img-blog.csdnimg.cn/20200329225330826.png" alt=""></p>
+</li>
+<li><p>可以看到的是所有的参数已经给出，但是如果我们按照这个去算会很慢，因为数值是比较大的，所以这里我们用到了快速幂模</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Q_1&#x3D;  103766439849465588084625049495793857634556517064563488433148224524638105971161051763127718438062862548184814747601299494052813662851459740127499557785398714481909461631996020048315790167967699932967974484481209879664173009585231469785141628982021847883945871201430155071257803163523612863113967495969578605521</span><br><span class="line">Q_2&#x3D;  151010734276916939790591461278981486442548035032350797306496105136358723586953123484087860176438629843688462671681777513652947555325607414858514566053513243083627810686084890261120641161987614435114887565491866120507844566210561620503961205851409386041194326728437073995372322433035153519757017396063066469743</span><br><span class="line">sub_Q&#x3D; 168992529793593315757895995101430241994953638330919314800130536809801824971112039572562389449584350643924391984800978193707795909956472992631004290479273525116959461856227262232600089176950810729475058260332177626961286009876630340945093629959302803189668904123890991069113826241497783666995751391361028949651</span><br><span class="line">def fastExpMod(b, e, m):</span><br><span class="line">    result &#x3D; 1</span><br><span class="line">    while e !&#x3D; 0:</span><br><span class="line">        if (e&amp;1) &#x3D;&#x3D; 1:</span><br><span class="line">            # ei &#x3D; 1, then mul</span><br><span class="line">            result &#x3D; (result * b) % m</span><br><span class="line">        e &gt;&gt;&#x3D; 1</span><br><span class="line">        # b, b^2, b^4, b^8, ... , b^(2^n)</span><br><span class="line">        b &#x3D; (b*b) % m</span><br><span class="line">    return result</span><br><span class="line">_q&#x3D;fastExpMod(sub_Q,Q_2 , Q_1)</span><br><span class="line">_q&#x3D;sympy.nextprime(_q)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>通过这个得到最终的Q的值</li>
+<li>最后按照常规RSA的解密，完成此题（完整代码）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">import sympy</span><br><span class="line">import gmpy2 </span><br><span class="line">from Crypto.Util.number import getPrime, isPrime, bytes_to_long, long_to_bytes</span><br><span class="line"></span><br><span class="line">base&#x3D;65537</span><br><span class="line"></span><br><span class="line">factor &#x3D; 213671742765908980787116579976289600595864704574134469173111790965233629909513884704158446946409910475727584342641848597858942209151114627306286393390259700239698869487469080881267182803062488043469138252786381822646126962323295676431679988602406971858136496624861228526070581338082202663895710929460596143281673761666804565161435963957655012011051936180536581488499059517946308650135300428672486819645279969693519039407892941672784362868653243632727928279698588177694171797254644864554162848696210763681197279758130811723700154618280764123396312330032986093579531909363210692564988076206283296967165522152288770019720928264542910922693728918198338839</span><br><span class="line">n&#x3D;1</span><br><span class="line">p &#x3D; [0 for i in range(17)]</span><br><span class="line">p[0]&#x3D;206027926847308612719677572554991142909</span><br><span class="line">p[1]&#x3D;206027926847308612719677572554991142911</span><br><span class="line">p[2]&#x3D;206027926847308612719677572554991142977</span><br><span class="line">p[3]&#x3D;206027926847308612719677572554991143071</span><br><span class="line">p[4]&#x3D;206027926847308612719677572554991143103</span><br><span class="line">p[5]&#x3D;206027926847308612719677572554991143121</span><br><span class="line">p[6]&#x3D;206027926847308612719677572554991143133</span><br><span class="line">p[7]&#x3D;206027926847308612719677572554991143317</span><br><span class="line">p[8]&#x3D;206027926847308612719677572554991143401</span><br><span class="line">p[9]&#x3D;206027926847308612719677572554991143421</span><br><span class="line">for i in range(10,17):</span><br><span class="line">    p[i]&#x3D;sympy.nextprime(p[i-1])</span><br><span class="line"></span><br><span class="line">for i in range(17):</span><br><span class="line">        x&#x3D; n*p[i]</span><br><span class="line">        n&#x3D;x</span><br><span class="line"></span><br><span class="line">phi&#x3D;1</span><br><span class="line">for i in range(0,17):</span><br><span class="line">    phi *&#x3D;p[i]-1</span><br><span class="line"></span><br><span class="line">d1&#x3D;gmpy2.invert(base,phi)</span><br><span class="line">_p&#x3D;pow(factor,d1,n)</span><br><span class="line">_p&#x3D;sympy.nextprime(_p)</span><br><span class="line"></span><br><span class="line">Q_1&#x3D;  103766439849465588084625049495793857634556517064563488433148224524638105971161051763127718438062862548184814747601299494052813662851459740127499557785398714481909461631996020048315790167967699932967974484481209879664173009585231469785141628982021847883945871201430155071257803163523612863113967495969578605521</span><br><span class="line">Q_2&#x3D;  151010734276916939790591461278981486442548035032350797306496105136358723586953123484087860176438629843688462671681777513652947555325607414858514566053513243083627810686084890261120641161987614435114887565491866120507844566210561620503961205851409386041194326728437073995372322433035153519757017396063066469743</span><br><span class="line">sub_Q&#x3D; 168992529793593315757895995101430241994953638330919314800130536809801824971112039572562389449584350643924391984800978193707795909956472992631004290479273525116959461856227262232600089176950810729475058260332177626961286009876630340945093629959302803189668904123890991069113826241497783666995751391361028949651</span><br><span class="line">def fastExpMod(b, e, m):</span><br><span class="line">    result &#x3D; 1</span><br><span class="line">    while e !&#x3D; 0:</span><br><span class="line">        if (e&amp;1) &#x3D;&#x3D; 1:</span><br><span class="line">            # ei &#x3D; 1, then mul</span><br><span class="line">            result &#x3D; (result * b) % m</span><br><span class="line">        e &gt;&gt;&#x3D; 1</span><br><span class="line">        # b, b^2, b^4, b^8, ... , b^(2^n)</span><br><span class="line">        b &#x3D; (b*b) % m</span><br><span class="line">    return result</span><br><span class="line">_q&#x3D;fastExpMod(sub_Q,Q_2 , Q_1)</span><br><span class="line">_q&#x3D;sympy.nextprime(_q)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">c&#x3D;  1709187240516367141460862187749451047644094885791761673574674330840842792189795049968394122216854491757922647656430908587059997070488674220330847871811836724541907666983042376216411561826640060734307013458794925025684062804589439843027290282034999617915124231838524593607080377300985152179828199569474241678651559771763395596697140206072537688129790126472053987391538280007082203006348029125729650207661362371936196789562658458778312533505938858959644541233578654340925901963957980047639114170033936570060250438906130591377904182111622236567507022711176457301476543461600524993045300728432815672077399879668276471832</span><br><span class="line">d&#x3D;gmpy2.invert(base,(_p-1)*(_q-1))</span><br><span class="line">m&#x3D;pow(c,d,_p*_q)</span><br><span class="line">print long_to_bytes(m)</span><br></pre></td></tr></table></figure>
+
+<h1 id="Easy-RSA"><a href="#Easy-RSA" class="headerlink" title="Easy_RSA"></a>Easy_RSA</h1><ul>
+<li>与上一题类似，这里我们依旧先从P开始<br><img src="https://img-blog.csdnimg.cn/20200329225948126.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDE1OTU5OA==,size_16,color_FFFFFF,t_70" alt=""></li>
+<li>可以看到最终的P需要从Ｐ_n以及P_F_n得到，类似解二元一次方程组，这里我们使用sage来快速解方程<br><img src="https://img-blog.csdnimg.cn/20200329230437741.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDE1OTU5OA==,size_16,color_FFFFFF,t_70" alt=""></li>
+<li>接下来解决Q的问题<br><img src="https://img-blog.csdnimg.cn/20200329230512279.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDE1OTU5OA==,size_16,color_FFFFFF,t_70" alt=""></li>
+<li>这里我们拿到了N和e<em>d，这个问题转变为已知N和e</em>d，分解N,直接上脚本</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">#coding&#x3D;utf-8</span><br><span class="line">from random import randint</span><br><span class="line">import gmpy2</span><br><span class="line">def oddR(r):</span><br><span class="line">    while r%2&#x3D;&#x3D;0:</span><br><span class="line">        r&#x3D;r&#x2F;&#x2F;2</span><br><span class="line">    return r</span><br><span class="line">    </span><br><span class="line">def bits(b):</span><br><span class="line">    k&#x3D;[]</span><br><span class="line">    while b:</span><br><span class="line">        if b%2!&#x3D;0:</span><br><span class="line">            k.append(1)</span><br><span class="line">        else:</span><br><span class="line">            k.append(0)</span><br><span class="line">        b&gt;&gt;&#x3D;1</span><br><span class="line">    k.reverse()      </span><br><span class="line">    return k</span><br><span class="line">    </span><br><span class="line">def quickmod(a,b,n):      #a^b mod n 快速幂模n运算</span><br><span class="line">    f&#x3D;1</span><br><span class="line">    k&#x3D;bits(b)</span><br><span class="line">    for i in range(len(k)):</span><br><span class="line">        f&#x3D;(f*f)%n</span><br><span class="line">        if k[i]:</span><br><span class="line">            f&#x3D;(f*a)%n</span><br><span class="line">    return f</span><br><span class="line"></span><br><span class="line">def gcd(m,n):</span><br><span class="line">    while(n!&#x3D;0):</span><br><span class="line">        m,n&#x3D;n,m%n</span><br><span class="line">    return m</span><br><span class="line"></span><br><span class="line">def func(e_d,N):</span><br><span class="line">    k&#x3D;e_d-1            </span><br><span class="line">    r&#x3D;oddR(k)           #求出k&#x3D;2^t*r中的r</span><br><span class="line">    </span><br><span class="line">    while True:</span><br><span class="line">        b&#x3D;randint(2,N-1)    #获取区间(2,N-1)的一个随机数</span><br><span class="line">        a&#x3D;quickmod(b,r,N)   </span><br><span class="line">        if a&#x3D;&#x3D;1:            </span><br><span class="line">            continue    </span><br><span class="line">        y&#x3D;gcd(a-1,N)</span><br><span class="line">        if a&gt;1 and y&gt;1:    </span><br><span class="line">            q&#x3D;N&#x2F;&#x2F;y</span><br><span class="line">            return q</span><br><span class="line">        else:</span><br><span class="line">            r&#x3D;r*2         </span><br><span class="line">    </span><br><span class="line">def deciphering(e_d,n):    、</span><br><span class="line">    p&#x3D;func(e_d,n)</span><br><span class="line">    q&#x3D;n&#x2F;&#x2F;p</span><br><span class="line">    phi&#x3D;n-(p+q)+1</span><br><span class="line">    if p*q&#x3D;&#x3D;n:</span><br><span class="line">        print p</span><br><span class="line">        print q</span><br><span class="line">    else:</span><br><span class="line">        print&quot;error&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">n &#x3D;  20714298338160449749545360743688018842877274054540852096459485283936802341271363766157976112525034004319938054034934880860956966585051684483662535780621673316774842614701726445870630109196016676725183412879870463432277629916669130494040403733295593655306104176367902352484367520262917943100467697540593925707162162616635533550262718808746254599456286578409187895171015796991910123804529825519519278388910483133813330902530160448972926096083990208243274548561238253002789474920730760001104048093295680593033327818821255300893423412192265814418546134015557579236219461780344469127987669565138930308525189944897421753947</span><br><span class="line">e_d&#x3D;  100772079222298134586116156850742817855408127716962891929259868746672572602333918958075582671752493618259518286336122772703330183037221105058298653490794337885098499073583821832532798309513538383175233429533467348390389323225198805294950484802068148590902907221150968539067980432831310376368202773212266320112670699737501054831646286585142281419237572222713975646843555024731855688573834108711874406149540078253774349708158063055754932812675786123700768288048445326199880983717504538825498103789304873682191053050366806825802602658674268440844577955499368404019114913934477160428428662847012289516655310680119638600315228284298935201</span><br><span class="line">deciphering(e_d,n)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>得到Q，最后依旧是RSA的常规解密</li>
+</ul>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1259742453@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">💰</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 weichujian
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>Help us with donation</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
+    </div>
+</div>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":250,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

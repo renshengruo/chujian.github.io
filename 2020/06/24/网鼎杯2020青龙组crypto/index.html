@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="love.js"></script>
+</head>
+<head>
+  <meta charset="utf-8">
+  <title>网鼎杯2020青龙组crypto | 人生若只如初见</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="网鼎杯2020青龙组crypto | 人生若只如初见">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="1、CVE-2018-11810超额定向分配相关合约源码 漏洞点 1234567891011121314151617181920212223function allocate(address _address, uint256 _amount, uint8 _type) public onlyOwner returns (bool success) &amp;#123;    &#x2F;&#x2F; o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="几个智能合约漏洞分析">
+<meta property="og:url" content="http://yoursite.com/2022/02/08/%E5%87%A0%E4%B8%AA%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="人生若只如初见">
+<meta property="og:description" content="1、CVE-2018-11810超额定向分配相关合约源码 漏洞点 1234567891011121314151617181920212223function allocate(address _address, uint256 _amount, uint8 _type) public onlyOwner returns (bool success) &amp;#123;    &#x2F;&#x2F; o">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/images/pasted-35.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-36.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-37.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-38.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-40.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-39.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-41.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-42.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-43.png">
+<meta property="article:published_time" content="2022-02-08T08:36:00.000Z">
+<meta property="article:modified_time" content="2022-02-08T11:21:13.529Z">
+<meta property="article:author" content="人生若只如初见">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/pasted-35.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+</div>
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>人生若只如初见</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+        <a title="github" href="https://github.com/weichujian" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="csdn" href="https://blog.csdn.net/weixin_44159598" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-csdn"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active" data-rel="All">All<small>(21)</small></div></li>
+    
+        
+            
+            <li><div data-rel="ctf">ctf<small>(2)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="密码学"><i class="fold iconfont icon-right"></i>密码学<small>(19)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="ECC">ECC<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="rsa">rsa<small>(8)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="区块链">区块链<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="填充方式">填充方式<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="算法">算法<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="编码">编码<small>(4)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="随机数">随机数<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    </div>
+    <div><a class="about  hasFriend  site_url"  href="/about">About</a><a style="width: 50%"  class="friends">Friends</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="21">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+            <li><a target="_blank" href="https://r0co.top/">r0co</a></li>
+            
+            <li><a target="_blank" href="http://www.stao.site">stao</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" />
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="All 密码学 区块链 "
+           href="/2022/02/08/%E5%87%A0%E4%B8%AA%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="几个智能合约漏洞分析">几个智能合约漏洞分析</span>
+            <span class="post-date" title="2022-02-08 16:36:00">2022/02/08</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2021/05/24/RSA-crt%E7%AD%BE%E5%90%8D%E9%97%AE%E9%A2%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="RSA-crt签名问题">RSA-crt签名问题</span>
+            <span class="post-date" title="2021-05-24 12:02:00">2021/05/24</span>
+        </a>
+        
+        <a  class="All 密码学 "
+           href="/2021/05/24/python%E5%AE%9E%E7%8E%B0des%E4%B8%8ERSA/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="python实现des与RSA">python实现des与RSA</span>
+            <span class="post-date" title="2021-05-24 11:50:00">2021/05/24</span>
+        </a>
+        
+        <a  class="All 密码学 "
+           href="/2021/03/17/rc4%E7%AC%94%E8%AE%B0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="rc4笔记">rc4笔记</span>
+            <span class="post-date" title="2021-03-17 16:00:00">2021/03/17</span>
+        </a>
+        
+        <a  class="All 密码学 填充方式 "
+           href="/2020/09/24/%E5%88%86%E7%BB%84%E5%8A%A0%E5%AF%86%E7%9A%84padding/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="分组加密的padding">分组加密的padding</span>
+            <span class="post-date" title="2020-09-24 19:55:00">2020/09/24</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/09/06/RsaLSBOrcalePadding/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="RsaLsbOrcalePadding">RsaLsbOrcalePadding</span>
+            <span class="post-date" title="2020-09-06 09:23:00">2020/09/06</span>
+        </a>
+        
+        <a  class="All ctf "
+           href="/2020/06/24/%E7%BD%91%E9%BC%8E%E6%9D%AF2020%E9%9D%92%E9%BE%99%E7%BB%84crypto/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="网鼎杯2020青龙组crypto">网鼎杯2020青龙组crypto</span>
+            <span class="post-date" title="2020-06-24 09:06:00">2020/06/24</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/06/23/rsa%E5%BD%93e-2%E4%B8%94%E4%B8%8D%E4%BA%92%E7%B4%A0%E6%97%B6%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="rsa当e=2且不互素时处理方式">rsa当e=2且不互素时处理方式</span>
+            <span class="post-date" title="2020-06-23 18:10:00">2020/06/23</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/06/01/%E5%B0%86CRT-%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86-%E4%B8%8ERSA%E7%BB%93%E5%90%88/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="将CRT(中国剩余定理)与RSA结合">将CRT(中国剩余定理)与RSA结合</span>
+            <span class="post-date" title="2020-06-01 09:00:00">2020/06/01</span>
+        </a>
+        
+        <a  class="All ctf "
+           href="/2020/05/29/MRctf2020%E5%AF%86%E7%A0%81/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="MRctf2020密码">MRctf2020密码</span>
+            <span class="post-date" title="2020-05-29 11:35:00">2020/05/29</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/05/28/rsa-Factor-Attack-%E5%8F%8A%E5%B8%B8%E7%94%A8%E8%84%9A%E6%9C%AC/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="RSA  Factor Attack 及常用脚本">RSA  Factor Attack 及常用脚本</span>
+            <span class="post-date" title="2020-05-28 22:31:00">2020/05/28</span>
+        </a>
+        
+        <a  class="All 密码学 算法 "
+           href="/2020/05/28/%E7%BA%A2%E9%BB%91%E6%A0%91%E7%9A%84%E5%88%A0%E9%99%A4%E5%92%8C%E5%8F%98%E8%89%B2/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="红黑树的删除和变色">红黑树的删除和变色</span>
+            <span class="post-date" title="2020-05-28 19:02:00">2020/05/28</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/05/28/rsa%E5%B7%B2%E7%9F%A5e-d%E5%88%86%E8%A7%A3N/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="rsa已知e*d分解N">rsa已知e*d分解N</span>
+            <span class="post-date" title="2020-05-28 18:30:00">2020/05/28</span>
+        </a>
+        
+        <a  class="All 密码学 随机数 "
+           href="/2020/05/28/lcg%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90%E5%99%A8/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="lcg线性同余随机数生成器">lcg线性同余随机数生成器</span>
+            <span class="post-date" title="2020-05-28 09:49:00">2020/05/28</span>
+        </a>
+        
+        <a  class="All 密码学 ECC "
+           href="/2020/05/27/Ecc%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%9F%BA%E7%A1%80/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Ecc椭圆曲线基础">Ecc椭圆曲线基础</span>
+            <span class="post-date" title="2020-05-27 18:16:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 编码 "
+           href="/2020/05/27/Unicode%E7%BC%96%E7%A0%81%E8%A1%8D%E7%94%9F%E5%87%BA%E7%9A%84%E7%BC%96%E7%A0%81%E6%96%B9%E6%A1%88/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Unicode编码衍生出的编码方案">Unicode编码衍生出的编码方案</span>
+            <span class="post-date" title="2020-05-27 18:11:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 编码 "
+           href="/2020/05/27/%E5%AF%86%E7%A0%81%E5%AD%A6%E7%BC%96%E7%A0%81-%E4%B8%89-Unicode%E7%BC%96%E7%A0%81/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="密码学编码(三)Unicode编码">密码学编码(三)Unicode编码</span>
+            <span class="post-date" title="2020-05-27 18:01:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 编码 "
+           href="/2020/05/27/%E5%AF%86%E7%A0%81%E5%AD%A6%E7%BC%96%E7%A0%81-%E4%B8%80-ASCII%E7%BC%96%E7%A0%81/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="密码学编码(一)ASCII编码">密码学编码(一)ASCII编码</span>
+            <span class="post-date" title="2020-05-27 17:56:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 编码 "
+           href="/2020/05/27/%E5%AF%86%E7%A0%81%E5%AD%A6%E7%BC%96%E7%A0%81-%E4%BA%8C-base%E7%BC%96%E7%A0%81/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="密码学编码(二)base编码">密码学编码(二)base编码</span>
+            <span class="post-date" title="2020-05-27 15:23:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/05/27/rsa%E5%B7%B2%E7%9F%A5%E9%AB%98%E4%BD%8D%E6%94%BB%E5%87%BB1/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="rsa已知高位攻击">rsa已知高位攻击</span>
+            <span class="post-date" title="2020-05-27 11:54:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/05/27/rsa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-1/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="rsa基础学习">rsa基础学习</span>
+            <span class="post-date" title="2020-05-27 11:46:00">2020/05/27</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-网鼎杯2020青龙组crypto" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">网鼎杯2020青龙组crypto</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            <a  data-rel="ctf">ctf</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2020-06-24 09:16:23'>2020-06-24 09:06</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Boom"><span class="toc-text">Boom</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#You-raise-me-up"><span class="toc-text">You raise me up</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#easy-ya"><span class="toc-text">easy_ya</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Boom"><a href="#Boom" class="headerlink" title="Boom"></a>Boom</h1><ul>
+<li>IDA打开，发现有三个验证，第一个验证md5值相等，解密得到en5oy,第二个解密三元一次方程，得到x=74,y=68,z=31,第三个解一元二次方程，正整数根x=89127561，得到flag</li>
+</ul>
+<p><img src="/images/pasted-31.png" alt=""></p>
+<p><img src="/images/pasted-32.png" alt=""></p>
+<h1 id="You-raise-me-up"><a href="#You-raise-me-up" class="headerlink" title="You raise me up"></a>You raise me up</h1><ul>
+<li>sage求离散对数</li>
+<li>脚本如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import binascii</span><br><span class="line">m &#x3D; 391190709124527428959489662565274039318305952172936859403855079581402770986890308469084735451207885386318986881041563704825943945069343345307381099559075</span><br><span class="line">c &#x3D; 6665851394203214245856789450723658632520816791621796775909766895233000234023642878786025644953797995373211308485605397024123180085924117610802485972584499</span><br><span class="line">n&#x3D;2**512</span><br><span class="line"></span><br><span class="line">a&#x3D;Mod(m,n)</span><br><span class="line">b&#x3D;Mod(c,n)</span><br><span class="line"></span><br><span class="line">flag_bin&#x3D;discrete_log(b,a)</span><br><span class="line">print (binascii.unhexlify(hex(flag_bin)[2:].strip(&quot;L&quot;)))</span><br></pre></td></tr></table></figure>
+
+<h1 id="easy-ya"><a href="#easy-ya" class="headerlink" title="easy_ya"></a>easy_ya</h1><ul>
+<li>nc每次连接会改变加密方式，直接爆破</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">from hashlib import *</span><br><span class="line">from pwn import *</span><br><span class="line">import string</span><br><span class="line">import itertools</span><br><span class="line">#context.log_level &#x3D; &quot;debug&quot;</span><br><span class="line">io &#x3D; remote(&quot;39.96.90.217&quot;, &quot;17497&quot;)</span><br><span class="line">io.recvuntil(&quot;&#x3D; &quot;)</span><br><span class="line">suffix &#x3D; io.recvline().strip().decode(&quot;utf-8&quot;)</span><br><span class="line">print(suffix)</span><br><span class="line">io.recvuntil(&quot;openssl_&quot;)</span><br><span class="line">mode &#x3D; io.recvuntil(&quot;&gt;&quot;)[:-1].decode(&quot;utf-8&quot;)</span><br><span class="line">print(mode)</span><br><span class="line">pts &#x3D; itertools.product(string.printable, repeat&#x3D;4)</span><br><span class="line">len &#x3D; 100**4</span><br><span class="line">cnt &#x3D; 0</span><br><span class="line">for pt in pts:</span><br><span class="line">    if cnt % 1000 &#x3D;&#x3D; 0:</span><br><span class="line">        print(&quot;&#123;&#125;%&quot;.format(100*cnt&#x2F;len))</span><br><span class="line">    p &#x3D; &quot;&quot;.join(list(pt))</span><br><span class="line">    if mode &#x3D;&#x3D; &quot;sha1&quot;:</span><br><span class="line">        ct &#x3D; sha1(p.encode()).hexdigest()</span><br><span class="line">    elif mode &#x3D;&#x3D; &quot;sha224&quot;:</span><br><span class="line">        ct &#x3D; sha224(p.encode()).hexdigest()</span><br><span class="line">    elif mode &#x3D;&#x3D; &quot;sha256&quot;:</span><br><span class="line">        ct &#x3D; sha256(p.encode()).hexdigest()</span><br><span class="line">    elif mode &#x3D;&#x3D; &quot;sha384&quot;:</span><br><span class="line">        ct &#x3D; sha384(p.encode()).hexdigest()</span><br><span class="line">    elif mode &#x3D;&#x3D; &quot;sha512&quot;:</span><br><span class="line">        ct &#x3D; sha512(p.encode()).hexdigest()</span><br><span class="line">    elif mode &#x3D;&#x3D; &quot;md5&quot;:</span><br><span class="line">        ct &#x3D; md5(p.encode()).hexdigest()</span><br><span class="line">    else:</span><br><span class="line">        exit(0)</span><br><span class="line">    if ct[:20] &#x3D;&#x3D; suffix:</span><br><span class="line">        print(p)</span><br><span class="line">        break</span><br><span class="line">    cnt +&#x3D; 1</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>提交token之后得到rsa中的n1 c1 n2 c2</li>
+<li>找到n1和n2的公约数，侧面分解n1,.n2</li>
+<li>解得ek是中文：愿我所爱无忧恙岁长安，根据ek生成规则得到key,算出题目的a,b,c,d</li>
+</ul>
+<ul>
+<li>题目在加密时，每8个字符作为一组，利用该组生成y和z然后对y和z进行运算，返回结果。注意到返回的结果为hex((y &lt;&lt; 52) ^ (pads &lt;&lt; 20) ^ z)</li>
+<li>所以可以知道</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1.返回结果（视作84位）的前32位是y；</span><br><span class="line">2.返回结果的第33位至第54位为pads的前20位，第55位至第64位为pads的后12位和z的前12位异或的结果。</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>注意到y和z一共运算了32轮，所以这时pads应该是limit(32*pad)，其后5位是0，所以pads的情况相当于：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">????? ******** ******** ****???? ???00000</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>其中 * 代表已知，? 代表未知，0就是0。去掉后边5个0后，另外32位就是pad。</li>
+<li>这个pad中，未知的地方只有12位，总计4096种情况，每种情况对应唯一的z。</li>
+<li>所以可以通过爆破这4096种情况，逆推32轮得到初始的y和z，再观察其转为字符后是否在string.printable中来确定答案。完整代码如下</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">import gmpy2</span><br><span class="line">from libnum import n2s,s2n</span><br><span class="line">import string</span><br><span class="line"></span><br><span class="line">n1 &#x3D; 523302236767994199900474363344509016779069116440336509402579663927023212822016176967224920257215697515649639915194389392664393435704126520500342935380422629852958893595198501678886910437288107490865842806189885864227955305292596726620737250011643028592306930279653650874633693082819617471411085797465171317473575199984137570425840763157847215554005503026976635376775672263338018024842152016782550728415532850496820668169596712488535626476321971915772540785626943870257914929277013026283202706480202573253694027965561121582254805059775814137542861056288774182091519461752761702279929984980399296157122817271523455097901334302748985253698791419583126820263035649222528798493821648538568572195005358978375666451378629463679501572550304224399031869931606326980885244883575380615433423693907673692911481956161922234589747374211957098461625670478121184734721478951324090304946630772999533103517416951906651316589244984076827527352185687877958699658011472950078992791104307370649334689901210147765149584862868749574640976109508247204313701721196275177445231013673265642224568068643851710967790673640935447579098048865343477978938147696617434878198467680874826616766904653374028721826187308127128623535689512750830887981058826202565202400511</span><br><span class="line">c1 &#x3D; 498116479126828060721351777093052860074248131123861633687756928866328288114135612849582257727497809922257024131348207980532057240060103798568227977564521497134127080257805342446192248133124844549442334197110567598270256443362563074473166503647429611051333058467042150637666479765740465760837773368463067714839472516227071241189038004851446423799255357523722335018334006275302424683874359612832738469924300750750078529793617519763670882091967677827342326944222743651042579235831828367996040140715066967834876505105847352068608085060284716208922782057542541292881761158407247706056426656079240060590899310402168208571288608455268870805780135942398347873755131825844602660879197979908250552518202142180574849619997871142575611493295891685289794234943270549985371377356916876993228441993132176346052582480841840804748103391892367360829385946406970449784716173650039815882209635063166095389007982620077884907738945623441531598991729082106049943909989119158441101967074276580858829052824691525753913860208906309655761578594225039981683717544420716889594252263165426914121554799496094906541367521362681696570717997925590955291849918357945303214885384216817697786187947817980231717851370305526120464677525392225631245022522492166336294567990</span><br><span class="line">n2 &#x3D; 536990588699972595171044696252776619032179414787125154102250364726703105272855466989014009336094247702108918440942171080587326115929077717421949560294869471182366684971337895133599697112193778007924450399107079732471847945598232349103839178632745959014098099259478108015237884846605377823461726458684486899249980041743056079896277510838968230729745020510029386228057731944169220820085059789541971092769832034181463596023438597531006332700648910769750936607476390311140301912742677001065893470340950419360642998700303488716826766066363262819042158064398656956185348135880225267894029419814797931720405594656777311094389676998338309809990367862926139317751409984908306801799152005179724137997626023826392780245630698648023945119617679627945415398046106871715475183890738417311925747430222040725394347022734489930069712092197629163647317772330355887387543008085150959104427391942023985298997288368357638062454066636100000548473809891299732343069825793293706407805782587150123342081839983609199059401502925783039760450730519603070519136086703825438807058787688044991172737575437559249668471352046085614345186161595152256193672994722540039920217058451215889862638946510188311582046866299423997659515395934871167522463706085186962242421859</span><br><span class="line">c2 &#x3D; 164402111514416870480151927449107349163820084533580709383993929301187569338852498622073106678649496858117593538947720740640339668153033620409471744700183709591276280704323985437330452541949262852531710176243561888397374683972759177181684560891529123569371241980602358823138808014488471284855401456011020109937046905434967828616466812821052222924691090808870700970795942705766163862790406417148540210339722273902825469460099520769061522024042123766536620554426683612099219790921573403278241760344418925630823806366949039901279532624187976211611528860461687073096888450694175459321193571925480949635977079339284905452476161156840739751431793628217796061271713787710176980187083301171958573364765677389306720995362317264018186392366551999368657422142163919262968449796794407119199996178284891867472060688293602896147398028717874542567143635071645595076767066361989345197270110842062044509038468406120271061465308775126927579741460684420290619983532930017201223504143911140388202527374930493248620993306321032961537876323380443523093814730204234290659449391857198796743587265894069493376291713198073023178977070834614584650913597763729414655680380751407408769289343905637501434637829997447542901620528323133332447667258731683700542347651</span><br><span class="line">p &#x3D; gmpy2.gcd(n1, n2)</span><br><span class="line">q1 &#x3D; n1 &#x2F;&#x2F; p</span><br><span class="line">q2 &#x3D; n2 &#x2F;&#x2F; p</span><br><span class="line">e &#x3D; 0x10001</span><br><span class="line">phi1 &#x3D; (p-1)*(q1-1)</span><br><span class="line">d1 &#x3D; gmpy2.invert(e, phi1)</span><br><span class="line">m &#x3D; pow(c1, d1, n1)</span><br><span class="line">ek &#x3D; n2s(m)</span><br><span class="line"></span><br><span class="line">key &#x3D; &#39;8891898088b197a0bfa78199b28195bfae89&#39;.decode(&#39;hex&#39;)</span><br><span class="line">limit &#x3D; lambda n: n &amp; 0xffffffff</span><br><span class="line"></span><br><span class="line">Key  &#x3D; [ord(i) for i in key]</span><br><span class="line">a &#x3D; limit((Key[0] &lt;&lt; 24) | (Key[1] &lt;&lt; 16) | (Key[2] &lt;&lt; 8) | Key[3])</span><br><span class="line">b &#x3D; limit((Key[4] &lt;&lt; 24) | (Key[5] &lt;&lt; 16) | (Key[6] &lt;&lt; 8) | Key[7])</span><br><span class="line">c &#x3D; limit((Key[8] &lt;&lt; 24) | (Key[9] &lt;&lt; 16) | (Key[10] &lt;&lt; 8) | Key[11])</span><br><span class="line">d &#x3D; limit((Key[12] &lt;&lt; 24) | (Key[13] &lt;&lt; 16) | (Key[14] &lt;&lt; 8) | Key[15])</span><br><span class="line"></span><br><span class="line">outputs &#x3D; [0x65d4ce3b0b1b3f48bb9fdL, 0xf0230f43414a9c9ac0488L, 0xbd592ebe04025b783fb5bL, 0x28d194dcd1c79b4bb8074L, 0x7c493be8f0fdbb740ec29L]</span><br><span class="line"></span><br><span class="line">def reversecalc(a, b, c, d, y, z, pad):</span><br><span class="line">    for i in range(32, 0, -1):</span><br><span class="line">        # print &#39;Round %d: %d, %d&#39; % (i, y, z)</span><br><span class="line">        pads &#x3D; limit(pad * i)</span><br><span class="line">        paramz &#x3D; (y*16+c)^(y+pads)^((y&gt;&gt;5)+d)</span><br><span class="line">        if(z &lt; paramz):</span><br><span class="line">            z &#x3D; limit(z - paramz + 0x100000000)</span><br><span class="line">        else:</span><br><span class="line">            z &#x3D; limit(z - paramz)</span><br><span class="line">        paramy &#x3D; (z*16+a)^(z+pads)^((z&gt;&gt;5)+b)</span><br><span class="line">        if(y &lt; paramy):</span><br><span class="line">            y &#x3D; limit(y - paramy + 0x100000000)</span><br><span class="line">        else:</span><br><span class="line">            y &#x3D; limit(y - paramy)</span><br><span class="line">        # print (y, z)</span><br><span class="line">    return y, z</span><br><span class="line"></span><br><span class="line">for output in outputs:</span><br><span class="line">    print hex(output)</span><br><span class="line">    binout &#x3D; bin(output)[2:]</span><br><span class="line">    binout &#x3D; &#39;0&#39;*(84-len(binout))+binout</span><br><span class="line">    y &#x3D; int(binout[:32], 2)</span><br><span class="line">    for i in range(4096):</span><br><span class="line">        bini &#x3D; bin(i)[2:]</span><br><span class="line">        bini &#x3D; &#39;0&#39;*(12-len(bini))+bini</span><br><span class="line">        tmpbinpads &#x3D; bini[0:5] + binout[32:52] + bini[5:12] + &#39;00000&#39;</span><br><span class="line">        pad &#x3D; int(tmpbinpads, 2) &#x2F; 32</span><br><span class="line">        pads &#x3D; limit(int(tmpbinpads, 2))</span><br><span class="line">        z &#x3D; output ^ (y&lt;&lt;52) ^ (pads&lt;&lt;20)</span><br><span class="line">        y0, z0 &#x3D; reversecalc(a, b, c, d, y, z, pad)</span><br><span class="line">        tmpstr &#x3D; n2s(y0)+n2s(z0)</span><br><span class="line">        valid &#x3D; True</span><br><span class="line">        for j in tmpstr:</span><br><span class="line">            if (not j in string.printable)and(j !&#x3D; &#39;\x00&#39;):</span><br><span class="line">                valid &#x3D; False</span><br><span class="line">                break</span><br><span class="line">        if(valid):</span><br><span class="line">            print tmpstr</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>输出结果：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">0x65d4ce3b0b1b3f48bb9fdL</span><br><span class="line">S60 &#39;\M(</span><br><span class="line">flag&#123;5fe</span><br><span class="line">0xf0230f43414a9c9ac0488L</span><br><span class="line">86c73a3e</span><br><span class="line">0xbd592ebe04025b783fb5bL</span><br><span class="line">Us</span><br><span class="line">NU\KNP-F</span><br><span class="line">381ee168</span><br><span class="line">0x28d194dcd1c79b4bb8074L</span><br><span class="line">)^C04&lt;b5</span><br><span class="line">Z&quot;N*&#39;U_x000C_&#x3D;</span><br><span class="line">83c04451</span><br><span class="line">GNM1!Uyl</span><br><span class="line">0x7c493be8f0fdbb740ec29L</span><br><span class="line">9o&#96;YE</span><br><span class="line">1356f&#125;</span><br><span class="line">QG_x000C_rVHZo</span><br><span class="line">7ju-px&#x2F;_x000C</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>寻找其中看起来像的拼接得到flag</li>
+</ul>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1259742453@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">💰</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 weichujian
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>Help us with donation</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
+    </div>
+</div>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":250,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

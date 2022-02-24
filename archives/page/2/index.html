@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="love.js"></script>
+</head>
+<head>
+  <meta charset="utf-8">
+  <title>人生若只如初见</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="人生若只如初见">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="1、CVE-2018-11810超额定向分配相关合约源码 漏洞点 1234567891011121314151617181920212223function allocate(address _address, uint256 _amount, uint8 _type) public onlyOwner returns (bool success) &amp;#123;    &#x2F;&#x2F; o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="几个智能合约漏洞分析">
+<meta property="og:url" content="http://yoursite.com/2022/02/08/%E5%87%A0%E4%B8%AA%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="人生若只如初见">
+<meta property="og:description" content="1、CVE-2018-11810超额定向分配相关合约源码 漏洞点 1234567891011121314151617181920212223function allocate(address _address, uint256 _amount, uint8 _type) public onlyOwner returns (bool success) &amp;#123;    &#x2F;&#x2F; o">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/images/pasted-35.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-36.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-37.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-38.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-40.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-39.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-41.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-42.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-43.png">
+<meta property="article:published_time" content="2022-02-08T08:36:00.000Z">
+<meta property="article:modified_time" content="2022-02-08T11:21:13.529Z">
+<meta property="article:author" content="人生若只如初见">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/pasted-35.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+</div>
+
+
+<body>
+<aside class="nav mobile">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>人生若只如初见</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+        <a title="github" href="https://github.com/weichujian" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="csdn" href="https://blog.csdn.net/weixin_44159598" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-csdn"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active" data-rel="All">All<small>(21)</small></div></li>
+    
+        
+            
+            <li><div data-rel="ctf">ctf<small>(2)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="密码学"><i class="fold iconfont icon-right"></i>密码学<small>(19)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="ECC">ECC<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="rsa">rsa<small>(8)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="区块链">区块链<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="填充方式">填充方式<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="算法">算法<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="编码">编码<small>(4)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="随机数">随机数<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    </div>
+    <div><a class="about  hasFriend  site_url"  href="/about">About</a><a style="width: 50%"  class="friends">Friends</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="21">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+            <li><a target="_blank" href="https://r0co.top/">r0co</a></li>
+            
+            <li><a target="_blank" href="http://www.stao.site">stao</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" />
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="All 密码学 区块链 "
+           href="/2022/02/08/%E5%87%A0%E4%B8%AA%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="几个智能合约漏洞分析">几个智能合约漏洞分析</span>
+            <span class="post-date" title="2022-02-08 16:36:00">2022/02/08</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2021/05/24/RSA-crt%E7%AD%BE%E5%90%8D%E9%97%AE%E9%A2%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="RSA-crt签名问题">RSA-crt签名问题</span>
+            <span class="post-date" title="2021-05-24 12:02:00">2021/05/24</span>
+        </a>
+        
+        <a  class="All 密码学 "
+           href="/2021/05/24/python%E5%AE%9E%E7%8E%B0des%E4%B8%8ERSA/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="python实现des与RSA">python实现des与RSA</span>
+            <span class="post-date" title="2021-05-24 11:50:00">2021/05/24</span>
+        </a>
+        
+        <a  class="All 密码学 "
+           href="/2021/03/17/rc4%E7%AC%94%E8%AE%B0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="rc4笔记">rc4笔记</span>
+            <span class="post-date" title="2021-03-17 16:00:00">2021/03/17</span>
+        </a>
+        
+        <a  class="All 密码学 填充方式 "
+           href="/2020/09/24/%E5%88%86%E7%BB%84%E5%8A%A0%E5%AF%86%E7%9A%84padding/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="分组加密的padding">分组加密的padding</span>
+            <span class="post-date" title="2020-09-24 19:55:00">2020/09/24</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/09/06/RsaLSBOrcalePadding/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="RsaLsbOrcalePadding">RsaLsbOrcalePadding</span>
+            <span class="post-date" title="2020-09-06 09:23:00">2020/09/06</span>
+        </a>
+        
+        <a  class="All ctf "
+           href="/2020/06/24/%E7%BD%91%E9%BC%8E%E6%9D%AF2020%E9%9D%92%E9%BE%99%E7%BB%84crypto/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="网鼎杯2020青龙组crypto">网鼎杯2020青龙组crypto</span>
+            <span class="post-date" title="2020-06-24 09:06:00">2020/06/24</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/06/23/rsa%E5%BD%93e-2%E4%B8%94%E4%B8%8D%E4%BA%92%E7%B4%A0%E6%97%B6%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="rsa当e=2且不互素时处理方式">rsa当e=2且不互素时处理方式</span>
+            <span class="post-date" title="2020-06-23 18:10:00">2020/06/23</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/06/01/%E5%B0%86CRT-%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86-%E4%B8%8ERSA%E7%BB%93%E5%90%88/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="将CRT(中国剩余定理)与RSA结合">将CRT(中国剩余定理)与RSA结合</span>
+            <span class="post-date" title="2020-06-01 09:00:00">2020/06/01</span>
+        </a>
+        
+        <a  class="All ctf "
+           href="/2020/05/29/MRctf2020%E5%AF%86%E7%A0%81/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="MRctf2020密码">MRctf2020密码</span>
+            <span class="post-date" title="2020-05-29 11:35:00">2020/05/29</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/05/28/rsa-Factor-Attack-%E5%8F%8A%E5%B8%B8%E7%94%A8%E8%84%9A%E6%9C%AC/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="RSA  Factor Attack 及常用脚本">RSA  Factor Attack 及常用脚本</span>
+            <span class="post-date" title="2020-05-28 22:31:00">2020/05/28</span>
+        </a>
+        
+        <a  class="All 密码学 算法 "
+           href="/2020/05/28/%E7%BA%A2%E9%BB%91%E6%A0%91%E7%9A%84%E5%88%A0%E9%99%A4%E5%92%8C%E5%8F%98%E8%89%B2/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="红黑树的删除和变色">红黑树的删除和变色</span>
+            <span class="post-date" title="2020-05-28 19:02:00">2020/05/28</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/05/28/rsa%E5%B7%B2%E7%9F%A5e-d%E5%88%86%E8%A7%A3N/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="rsa已知e*d分解N">rsa已知e*d分解N</span>
+            <span class="post-date" title="2020-05-28 18:30:00">2020/05/28</span>
+        </a>
+        
+        <a  class="All 密码学 随机数 "
+           href="/2020/05/28/lcg%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90%E5%99%A8/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="lcg线性同余随机数生成器">lcg线性同余随机数生成器</span>
+            <span class="post-date" title="2020-05-28 09:49:00">2020/05/28</span>
+        </a>
+        
+        <a  class="All 密码学 ECC "
+           href="/2020/05/27/Ecc%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%9F%BA%E7%A1%80/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Ecc椭圆曲线基础">Ecc椭圆曲线基础</span>
+            <span class="post-date" title="2020-05-27 18:16:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 编码 "
+           href="/2020/05/27/Unicode%E7%BC%96%E7%A0%81%E8%A1%8D%E7%94%9F%E5%87%BA%E7%9A%84%E7%BC%96%E7%A0%81%E6%96%B9%E6%A1%88/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Unicode编码衍生出的编码方案">Unicode编码衍生出的编码方案</span>
+            <span class="post-date" title="2020-05-27 18:11:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 编码 "
+           href="/2020/05/27/%E5%AF%86%E7%A0%81%E5%AD%A6%E7%BC%96%E7%A0%81-%E4%B8%89-Unicode%E7%BC%96%E7%A0%81/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="密码学编码(三)Unicode编码">密码学编码(三)Unicode编码</span>
+            <span class="post-date" title="2020-05-27 18:01:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 编码 "
+           href="/2020/05/27/%E5%AF%86%E7%A0%81%E5%AD%A6%E7%BC%96%E7%A0%81-%E4%B8%80-ASCII%E7%BC%96%E7%A0%81/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="密码学编码(一)ASCII编码">密码学编码(一)ASCII编码</span>
+            <span class="post-date" title="2020-05-27 17:56:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 编码 "
+           href="/2020/05/27/%E5%AF%86%E7%A0%81%E5%AD%A6%E7%BC%96%E7%A0%81-%E4%BA%8C-base%E7%BC%96%E7%A0%81/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="密码学编码(二)base编码">密码学编码(二)base编码</span>
+            <span class="post-date" title="2020-05-27 15:23:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/05/27/rsa%E5%B7%B2%E7%9F%A5%E9%AB%98%E4%BD%8D%E6%94%BB%E5%87%BB1/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="rsa已知高位攻击">rsa已知高位攻击</span>
+            <span class="post-date" title="2020-05-27 11:54:00">2020/05/27</span>
+        </a>
+        
+        <a  class="All 密码学 rsa "
+           href="/2020/05/27/rsa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-1/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="rsa基础学习">rsa基础学习</span>
+            <span class="post-date" title="2020-05-27 11:46:00">2020/05/27</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post" class="index">
+    <div class="pjax">
+        <article class="index">
+            <div class="toc-ref">
+    
+        
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+            <pre><code>第一章　总　则
+
+第一条　为了规范密码应用和管理，促进密码事业发展，保障网络与信息安全，维护国家安全和社会公共利益，保护公民、法人和其他组织的合法权益，制定本法。
+第二条　本法所称密码，是指采用特定变换的方法对信息等进行加密保护、安全认证的技术、产品和服务。
+第三条　密码工作坚持总体国家安全观，遵循统一领导、分级负责，创新发展、服务大局，依法管理、保障安全的原则。
+第四条　坚持中国共产党对密码工作的领导。中央密码工作领导机构对全国密码工作实行统一领导，制定国家密码工作重大方针政策，统筹协调国家密码重大事项和重要工作，推进国家密码法治建设。
+第五条　国家密码管理部门负责管理全国的密码工作。县级以上地方各级密码管理部门负责管理本行政区域的密码工作。
+国家机关和涉及密码工作的单位在其职责范围内负责本机关、本单位或者本系统的密码工作。
+第六条　国家对密码实行分类管理。
+密码分为核心密码、普通密码和商用密码。
+第七条　核心密码、普通密码用于保护国家秘密信息，核心密码保护信息的最高密级为绝密级，普通密码保护信息的最高密级为机密级。
+核心密码、普通密码属于国家秘密。密码管理部门依照本法和有关法律、行政法规、国家有关规定对核心密码、普通密码实行严格统一管理。
+第八条　商用密码用于保护不属于国家秘密的信息。
+公民、法人和其他组织可以依法使用商用密码保护网络与信息安全。
+第九条　国家鼓励和支持密码科学技术研究和应用，依法保护密码领域的知识产权，促进密码科学技术进步和创新。
+国家加强密码人才培养和队伍建设，对在密码工作中作出突出贡献的组织和个人，按照国家有关规定给予表彰和奖励。
+第十条　国家采取多种形式加强密码安全教育，将密码安全教育纳入国民教育体系和公务员教育培训体系，增强公民、法人和其他组织的密码安全意识。
+第十一条　县级以上人民政府应当将密码工作纳入本级国民经济和社会发展规划，所需经费列入本级财政预算。
+第十二条　任何组织或者个人不得窃取他人加密保护的信息或者非法侵入他人的密码保障系统。
+任何组织或者个人不得利用密码从事危害国家安全、社会公共利益、他人合法权益等违法犯罪活动。
+第二章　核心密码、普通密码
+第十三条　国家加强核心密码、普通密码的科学规划、管理和使用，加强制度建设，完善管理措施，增强密码安全保障能力。
+第十四条　在有线、无线通信中传递的国家秘密信息，以及存储、处理国家秘密信息的信息系统，应当依照法律、行政法规和国家有关规定使用核心密码、普通密码进行加密保护、安全认证。
+第十五条　从事核心密码、普通密码科研、生产、服务、检测、装备、使用和销毁等工作的机构（以下统称密码工作机构）应当按照法律、行政法规、国家有关规定以及核心密码、普通密码标准的要求，建立健全安全管理制度，采取严格的保密措施和保密责任制，确保核心密码、普通密码的安全。
+第十六条　密码管理部门依法对密码工作机构的核心密码、普通密码工作进行指导、监督和检查，密码工作机构应当配合。
+第十七条　密码管理部门根据工作需要会同有关部门建立核心密码、普通密码的安全监测预警、安全风险评估、信息通报、重大事项会商和应急处置等协作机制，确保核心密码、普通密码安全管理的协同联动和有序高效。
+密码工作机构发现核心密码、普通密码泄密或者影响核心密码、普通密码安全的重大问题、风险隐患的，应当立即采取应对措施，并及时向保密行政管理部门、密码管理部门报告，由保密行政管理部门、密码管理部门会同有关部门组织开展调查、处置，并指导有关密码工作机构及时消除安全隐患。
+第十八条　国家加强密码工作机构建设，保障其履行工作职责。
+国家建立适应核心密码、普通密码工作需要的人员录用、选调、保密、考核、培训、待遇、奖惩、交流、退出等管理制度。
+第十九条　密码管理部门因工作需要，按照国家有关规定，可以提请公安、交通运输、海关等部门对核心密码、普通密码有关物品和人员提供免检等便利，有关部门应当予以协助。
+第二十条　密码管理部门和密码工作机构应当建立健全严格的监督和安全审查制度，对其工作人员遵守法律和纪律等情况进行监督，并依法采取必要措施，定期或者不定期组织开展安全审查。
+第三章　商用密码
+第二十一条　国家鼓励商用密码技术的研究开发、学术交流、成果转化和推广应用，健全统一、开放、竞争、有序的商用密码市场体系，鼓励和促进商用密码产业发展。
+各级人民政府及其有关部门应当遵循非歧视原则，依法平等对待包括外商投资企业在内的商用密码科研、生产、销售、服务、进出口等单位（以下统称商用密码从业单位）。国家鼓励在外商投资过程中基于自愿原则和商业规则开展商用密码技术合作。行政机关及其工作人员不得利用行政手段强制转让商用密码技术。
+商用密码的科研、生产、销售、服务和进出口，不得损害国家安全、社会公共利益或者他人合法权益。
+第二十二条　国家建立和完善商用密码标准体系。
+国务院标准化行政主管部门和国家密码管理部门依据各自职责，组织制定商用密码国家标准、行业标准。
+国家支持社会团体、企业利用自主创新技术制定高于国家标准、行业标准相关技术要求的商用密码团体标准、企业标准。
+第二十三条　国家推动参与商用密码国际标准化活动，参与制定商用密码国际标准，推进商用密码中国标准与国外标准之间的转化运用。
+国家鼓励企业、社会团体和教育、科研机构等参与商用密码国际标准化活动。
+第二十四条　商用密码从业单位开展商用密码活动，应当符合有关法律、行政法规、商用密码强制性国家标准以及该从业单位公开标准的技术要求。
+国家鼓励商用密码从业单位采用商用密码推荐性国家标准、行业标准，提升商用密码的防护能力，维护用户的合法权益。
+第二十五条　国家推进商用密码检测认证体系建设，制定商用密码检测认证技术规范、规则，鼓励商用密码从业单位自愿接受商用密码检测认证，提升市场竞争力。
+商用密码检测、认证机构应当依法取得相关资质，并依照法律、行政法规的规定和商用密码检测认证技术规范、规则开展商用密码检测认证。
+商用密码检测、认证机构应当对其在商用密码检测认证中所知悉的国家秘密和商业秘密承担保密义务。
+第二十六条　涉及国家安全、国计民生、社会公共利益的商用密码产品，应当依法列入网络关键设备和网络安全专用产品目录，由具备资格的机构检测认证合格后，方可销售或者提供。商用密码产品检测认证适用《中华人民共和国网络安全法》的有关规定，避免重复检测认证。
+商用密码服务使用网络关键设备和网络安全专用产品的，应当经商用密码认证机构对该商用密码服务认证合格。
+第二十七条　法律、行政法规和国家有关规定要求使用商用密码进行保护的关键信息基础设施，其运营者应当使用商用密码进行保护，自行或者委托商用密码检测机构开展商用密码应用安全性评估。商用密码应用安全性评估应当与关键信息基础设施安全检测评估、网络安全等级测评制度相衔接，避免重复评估、测评。
+关键信息基础设施的运营者采购涉及商用密码的网络产品和服务，可能影响国家安全的，应当按照《中华人民共和国网络安全法》的规定，通过国家网信部门会同国家密码管理部门等有关部门组织的国家安全审查。
+第二十八条　国务院商务主管部门、国家密码管理部门依法对涉及国家安全、社会公共利益且具有加密保护功能的商用密码实施进口许可，对涉及国家安全、社会公共利益或者中国承担国际义务的商用密码实施出口管制。商用密码进口许可清单和出口管制清单由国务院商务主管部门会同国家密码管理部门和海关总署制定并公布。
+大众消费类产品所采用的商用密码不实行进口许可和出口管制制度。
+第二十九条　国家密码管理部门对采用商用密码技术从事电子政务电子认证服务的机构进行认定，会同有关部门负责政务活动中使用电子签名、数据电文的管理。
+第三十条　商用密码领域的行业协会等组织依照法律、行政法规及其章程的规定，为商用密码从业单位提供信息、技术、培训等服务，引导和督促商用密码从业单位依法开展商用密码活动，加强行业自律，推动行业诚信建设，促进行业健康发展。
+第三十一条　密码管理部门和有关部门建立日常监管和随机抽查相结合的商用密码事中事后监管制度，建立统一的商用密码监督管理信息平台，推进事中事后监管与社会信用体系相衔接，强化商用密码从业单位自律和社会监督。
+密码管理部门和有关部门及其工作人员不得要求商用密码从业单位和商用密码检测、认证机构向其披露源代码等密码相关专有信息，并对其在履行职责中知悉的商业秘密和个人隐私严格保密，不得泄露或者非法向他人提供。
+第四章　法律责任
+第三十二条　违反本法第十二条规定，窃取他人加密保护的信息，非法侵入他人的密码保障系统，或者利用密码从事危害国家安全、社会公共利益、他人合法权益等违法活动的，由有关部门依照《中华人民共和国网络安全法》和其他有关法律、行政法规的规定追究法律责任。
+第三十三条　违反本法第十四条规定，未按照要求使用核心密码、普通密码的，由密码管理部门责令改正或者停止违法行为，给予警告；情节严重的，由密码管理部门建议有关国家机关、单位对直接负责的主管人员和其他直接责任人员依法给予处分或者处理。
+第三十四条　违反本法规定，发生核心密码、普通密码泄密案件的，由保密行政管理部门、密码管理部门建议有关国家机关、单位对直接负责的主管人员和其他直接责任人员依法给予处分或者处理。
+违反本法第十七条第二款规定，发现核心密码、普通密码泄密或者影响核心密码、普通密码安全的重大问题、风险隐患，未立即采取应对措施，或者未及时报告的，由保密行政管理部门、密码管理部门建议有关国家机关、单位对直接负责的主管人员和其他直接责任人员依法给予处分或者处理。
+第三十五条　商用密码检测、认证机构违反本法第二十五条第二款、第三款规定开展商用密码检测认证的，由市场监督管理部门会同密码管理部门责令改正或者停止违法行为，给予警告，没收违法所得；违法所得三十万元以上的，可以并处违法所得一倍以上三倍以下罚款；没有违法所得或者违法所得不足三十万元的，可以并处十万元以上三十万元以下罚款；情节严重的，依法吊销相关资质。
+第三十六条　违反本法第二十六条规定，销售或者提供未经检测认证或者检测认证不合格的商用密码产品，或者提供未经认证或者认证不合格的商用密码服务的，由市场监督管理部门会同密码管理部门责令改正或者停止违法行为，给予警告，没收违法产品和违法所得；违法所得十万元以上的，可以并处违法所得一倍以上三倍以下罚款；没有违法所得或者违法所得不足十万元的，可以并处三万元以上十万元以下罚款。
+第三十七条　关键信息基础设施的运营者违反本法第二十七条第一款规定，未按照要求使用商用密码，或者未按照要求开展商用密码应用安全性评估的，由密码管理部门责令改正，给予警告；拒不改正或者导致危害网络安全等后果的，处十万元以上一百万元以下罚款，对直接负责的主管人员处一万元以上十万元以下罚款。
+关键信息基础设施的运营者违反本法第二十七条第二款规定，使用未经安全审查或者安全审查未通过的产品或者服务的，由有关主管部门责令停止使用，处采购金额一倍以上十倍以下罚款；对直接负责的主管人员和其他直接责任人员处一万元以上十万元以下罚款。
+第三十八条　违反本法第二十八条实施进口许可、出口管制的规定，进出口商用密码的，由国务院商务主管部门或者海关依法予以处罚。
+第三十九条　违反本法第二十九条规定，未经认定从事电子政务电子认证服务的，由密码管理部门责令改正或者停止违法行为，给予警告，没收违法产品和违法所得；违法所得三十万元以上的，可以并处违法所得一倍以上三倍以下罚款；没有违法所得或者违法所得不足三十万元的，可以并处十万元以上三十万元以下罚款。
+第四十条　密码管理部门和有关部门、单位的工作人员在密码工作中滥用职权、玩忽职守、徇私舞弊，或者泄露、非法向他人提供在履行职责中知悉的商业秘密和个人隐私的，依法给予处分。
+第四十一条　违反本法规定，构成犯罪的，依法追究刑事责任；给他人造成损害的，依法承担民事责任。</code></pre><p>到目前为止已经写了<code class="article_number"></code>篇文章， 共<code class="site_word_count"></code>字。</p>
+<p>本站访问人数：<code class="site_uv"></code>人次 ， 访问量：<code class="site_pv"></code>次</p>
+<p>主要功能：</p>
+<ul>
+<li>搜索支持文章标题、标签(#标签)、作者(@作者)</li>
+<li>pad/手机等移动端适配</li>
+<li>页面全局快捷键 <a href='http://yelog.org/2017/03/24/3-hexo-shortcuts/' target="_blank" rel="noopener">3-hexo快捷键说明</a></li>
+</ul>
+
+        </article>
+        
+        <p>
+            <a  class="dashang" onclick="dashangToggle()">赏</a>
+        </p>
+        
+        
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 weichujian
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+</div>
+<div class="full-toc">
+    <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>Help us with donation</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
+    </div>
+</div>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":250,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
